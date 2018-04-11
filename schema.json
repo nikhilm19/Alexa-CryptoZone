@@ -1,0 +1,148 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "crypto manager",
+            "intents": [
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "CryptoRateIntent",
+                    "slots": [
+                        {
+                            "name": "Currency",
+                            "type": "cryptocurrency"
+                        }
+                    ],
+                    "samples": [
+                        "tell me the worth of {Currency}",
+                        "what is {Currency} worth",
+                        "current rate of {Currency}",
+                        "what is current rate of {Currency}",
+                        "what is the current rate of {Currency}",
+                        "tell me current rate of {Currency}",
+                        "how is {Currency} faring today",
+                        "how is {Currency} doing today",
+                        "is {Currency} making loss or profit",
+                        "what is the rate of {Currency} today",
+                        "can you tell me rate of {Currency}",
+                        "what is the rate of {Currency}",
+                        "to tell rate of {Currency}"
+                    ]
+                },
+                {
+                    "name": "CryptoCompareIntent",
+                    "slots": [
+                        {
+                            "name": "FirstCurrency",
+                            "type": "cryptocurrency"
+                        },
+                        {
+                            "name": "SecondCurrency",
+                            "type": "cryptocurrency"
+                        }
+                    ],
+                    "samples": [
+                        "which is better {FirstCurrency} or {SecondCurrency}",
+                        "difference between {FirstCurrency} and {SecondCurrency}",
+                        "how is {FirstCurrency} doing compared to {SecondCurrency}",
+                        "is {FirstCurrency} better than {SecondCurrency}",
+                        "{FirstCurrency} versus {SecondCurrency}",
+                        "compare {FirstCurrency} and {SecondCurrency}"
+                    ]
+                }
+            ],
+            "types": [
+                {
+                    "name": "cryptocurrency",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "nem"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "tether"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "dash"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "monero"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "tron"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "iota"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "neo"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "stellar"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "cardano"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "eos"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "litecoin"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "bitcoin-cash"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "ripple"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "ethereum"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "bitcoin"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
