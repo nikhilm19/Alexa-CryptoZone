@@ -117,7 +117,7 @@ def findPrice(js):
         change = int(float(js["ticker"]['change']))
         cents, speak_point, speak_zero = findSpeakPoint(price)
         if price < 1:
-            cents, speak_point, speak_zero = findSpeakPoint(price_1)
+            cents, speak_point, speak_zero = findSpeakPoint(price)
             print(price, change, cents, speak_point, speak_zero)
             return 0, change, cents, speak_point, speak_zero
         else:
@@ -150,7 +150,7 @@ def whatToSay(price,currency_recieved,speak_zero,change,cents):
     if price == 0:
         say += "The price of " + currency_recieved + " is "
         if speak_zero == True:
-            say += "0 point " + str(cents)
+            say += "0 point " + str(cents) +"cents"
         else:
             say += str(cents)
     else:
