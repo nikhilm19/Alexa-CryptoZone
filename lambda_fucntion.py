@@ -51,30 +51,42 @@ def lambda_handler(event, context):
         intentName = event['request']['intent']['name']
         if intentName=="CryptoRateIntent":
             global d
-            currency_recieved = event['request']['intent']['slots']['Currency']['value']
-            price,change,cents,speak_point,speak_zero = httpsGet(d[currency_recieved])  ## see the helper function defined below
-            say=whatToSay(price,currency_recieved,speak_zero,change,cents)
+            currency_received = event['request']['intent']['slots']['Currency']['value']
+            if currency_received not in d:
+                say="sorry i dont know that"
+            else:
+                price,change,cents,speak_point,speak_zero = httpsGet(d[currency_received])  ## see the helper function defined below
+                say=whatToSay(price,currency_received,speak_zero,speak_point,change,cents)
+                if say=="":
+                    say="Sorry I don't know that"
             print(say)
 
         elif intentName=="CryptoCompareIntent":
             ##call compare function
-            currency_recieved_1 = event['request']['intent']['slots']['FirstCurrency']['value']
-            currency_recieved_2 = event['request']['intent']['slots']['SecondCurrency']['value']
-
-            vars= list(httpsGet(d[currency_recieved_1],d[currency_recieved_2],True))  ## vars is list of values of currency_1 and currency_2, see return values
-            if vars[0]!=0 and vars[5]!=0:
-                if vars[0]>vars[5] :
-                    say="1 " + currency_recieved_1 +" is equivalent to "+ str(abs(int(vars[0]/vars[5]))) + " "+currency_recieved_2
-                else:
-                    say = "1 " + currency_recieved_2 + " is equivalent to " + str(abs(int(vars[5] / vars[0]))) + " "+currency_recieved_1
-            say+="<break time='100ms'/> and "
-            if vars[1]>vars[6]:
-                say+=currency_recieved_1 + " is making profit of " + str(abs(int(vars[1])-int(vars[6]))) + " dollars as compared to "+ currency_recieved_2
-                
+            say=""
+            currency_received_1 = event['request']['intent']['slots']['FirstCurrency']['value']
+            currency_received_2 = event['request']['intent']['slots']['SecondCurrency']['value']
+            if currency_received_1 not in d or currency_received_2 not in d:
+                say="Sorry I don't know that"
             else:
-                say+=currency_recieved_2 + " is making profit of " + str(abs(int(vars[1])-int(vars[6]))) + " dollars as compared to "+ currency_recieved_1
-                
-                
+                if currency_received_1==currency_received_2 :
+                    say="Can't Compare same currencies"
+                else:
+                    
+                    vars= list(httpsGet(d[currency_received_1],d[currency_received_2],True))  ## vars is list of values of currency_1 and currency_2, see return values
+                    if vars[0]!=0 and vars[5]!=0:
+                        if vars[0]>vars[5] :
+                            say="1 " + currency_received_1 +" is equivalent to "+ str(abs(int(vars[0]/vars[5]))) + " "+currency_received_2
+                        else:
+                            say = "1 " + currency_received_2 + " is equivalent to " + str(abs(int(vars[5] / vars[0]))) + " "+currency_received_1
+                    say+="<break time='100ms'/> and "
+                    if vars[1]>vars[6]:
+                        say+=currency_received_1 + " is making profit of " + str(abs(int(vars[1])-int(vars[6]))) + " dollars as compared to "+ currency_received_2
+                        
+                    else:
+                        say+=currency_received_2 + " is making profit of " + str(abs(int(vars[1])-int(vars[6]))) + " dollars as compared to "+ currency_received_1
+                        
+                    
             ##say+=" While the price "
         return speechResponse(say, False, {})
 
@@ -138,23 +150,24 @@ def findSpeakPoint(price):
             speak_zero = True
         cents *= 10000
     else:
-        cents=0
         speak_point = speak_zero = False
     return int(cents),speak_point,speak_zero
 
-def whatToSay(price,currency_recieved,speak_zero,change,cents):
+def whatToSay(price,currency_received,speak_zero,speak_point,change,cents):
     """
     returns the speech response string as "say"
     """
     say=""
     if price == 0:
-        say += "The price of " + currency_recieved + " is "
+        say += "The price of " + currency_received + " is "
         if speak_zero == True:
-            say += "0 point " + str(cents) +"cents"
+            say += "0 point " + "0 " + str((int)(cents/100)) + " " +str(((int)(cents/10))%10) +" "+str(cents%10) +" cents"
+        elif speak_point == True:
+            say += "0 point " + str(cents) +" cents"
         else:
-            say += str(cents)
+            say+=str(cents) + " cents"
     else:
-        say = "The price of  " + currency_recieved + " is " + str(price) + " US  Dollars <break time='100ms'/>"
+        say = "The price of  " + currency_received + " is " + str(price) + " US  Dollars <break time='100ms'/>"
         if int(change)==0:
             say+="varying very minimal in the last hour"
         else:
@@ -166,7 +179,7 @@ def whatToSay(price,currency_recieved,speak_zero,change,cents):
                     say+="up by "+(str(abs(int(change))))+ " dollars in the last hour"
             else:
                 if int(change)==-1:
-                    say+"down by 1 dollar in the last hour "
+                    say+="down by 1 dollar in the last hour "
                 else:
                     say+=" down by "+ (str(abs(int(change))))+" dollars in the last hour"
     return  say
