@@ -114,7 +114,6 @@ def httpsGet(my_Currency_1,my_Currency_2=None,compare=False):
     """
     :param my_Currency_1: takes input of User-asked-currency
     :return price_1 and change_1 percentage in past 24 hrs:
-
     """
     global my_url
     my_local_url_1 = my_url + my_Currency_1 + "-usd"
@@ -143,7 +142,7 @@ def findPrice(js):
         change = float(js["ticker"]['change'])
         cents = findSpeakPoint(price)
         print(price, change, cents)
-        return int(price), change, cents
+        return price, change, cents
     else:
         print('Error, web service return data not in expected format')
         return 0
@@ -162,7 +161,7 @@ def whatToSay(price,currency_received,change,cents):
     if price == 0:
         say += "The price of " + currency_received + " is "+str(format(cents,'.4f')) + " cents"
     else:
-        say = "The price of  " + currency_received + " is " + str(price) + " US  Dollars <break time='100ms'/>"
+        say = "The price of  " + currency_received + " is " + str(format(price, '.2f')) + " US  Dollars <break time='100ms'/>"
         if int(change)==0:
             say+="varying very minimal in the last hour"
         else:
@@ -178,4 +177,3 @@ def whatToSay(price,currency_received,change,cents):
                 else:
                     say+=" down by "+ (str(abs(int(change))))+" dollars in the last hour"
     return  say
-
