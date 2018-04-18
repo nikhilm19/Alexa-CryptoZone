@@ -77,7 +77,7 @@ def lambda_handler(event, context):
                 else:
                     
                     vars= list(httpsGet(d[currency_received_1],d[currency_received_2],True))  ## vars is list of values of currency_1 and currency_2, see return values
-                    if vars[0]!=0 and vars[3]!=0:
+                    if int(vars[0])!=0 and int(vars[3])!=0:
                         if vars[0]>vars[3] :
                             say="1 " + currency_received_1 +" is equivalent to "+ str(abs(int(vars[0]/vars[3]))) + " "+currency_received_2
                         else:
