@@ -173,4 +173,3 @@ def whatToSay(price,currency_received,change,cents):
                 else:
                     say+=" down by "+ (str(abs(int(change))))+" dollars in the last hour"
     return  say
-
