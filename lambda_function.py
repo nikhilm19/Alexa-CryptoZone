@@ -1,6 +1,6 @@
 my_url = "https://www.cryptonator.com/api/ticker/"
 d = {'bitcoin': 'BTC', 'ethereum': 'ETH', 'ripple': 'XRP', 'bitcoincash': 'BCH', 'litecoin': 'LTC', 'eos': 'EOS',
-     'stellar': 'XLM', 'cardano': 'ADA', 'neo': 'NEO', 'iota': 'MIOTA', 'monero': 'XMR', 'dash': 'DASH',
+     'stellar': 'XLM', 'cardano': 'ADA', 'neo': 'NEO', 'iota': 'IOT', 'monero': 'XMR', 'dash': 'DASH',
      'tether': 'USDT', 'tron': 'TRX', 'nem': 'XEM', 'binancecoin': 'BNB', 'ethereumclassic': 'ETC', 'vechain': 'VEN',
      'qtum': 'QTUM', 'omisego': 'OMG', 'lisk': 'LSK', 'verge': 'XVG', 'icon': 'ICX', 'nano': 'NANO',
      'bitcoingold': 'BTG', 'zcash': 'ZEC', 'steem': 'STEEM', 'ontology': 'ONT', 'bytom': 'BTM', 'populous': 'PPT',
