@@ -41,7 +41,7 @@ def lambda_handler(event, context):
 
     if event['request']['type'] == "LaunchRequest":
 
-        say = "Welcome to Crypto Teller. You can ask me something like What is the price of Bitcoin? or How is Bitcoin doing as compared to ethereum"
+        say = "Welcome to Crypto Zone. You can ask me something like What is the price of Bitcoin? or How is Bitcoin doing as compared to ethereum"
 
         return speechResponse(say, False, {})
 
@@ -118,9 +118,7 @@ def httpsGet(my_Currency_1,my_Currency_2=None,compare=False):
     global my_url
     my_local_url_1 = my_url + my_Currency_1 + "-usd"
     r_1= requests.get(my_local_url_1)
-    #print(my_local_url_1,r_1)
     my_js_1 =(r_1.json())
-    print(my_js_1)
     price_1, change_1, cents_1 = findPrice(my_js_1)
     if compare == True:
         # find price_1 of currency1 and currency 2
@@ -128,7 +126,6 @@ def httpsGet(my_Currency_1,my_Currency_2=None,compare=False):
         r_2 = requests.get(my_local_url_2)
         my_js_2 = (r_2.json())
         price_2,change_2,cents_2=findPrice(my_js_2)
-        print(price_2,change_2)
         return price_1, change_1, cents_1,price_2,change_2,cents_2
 
     return price_1, change_1, cents_1
@@ -141,7 +138,6 @@ def findPrice(js):
         price = float(js["ticker"]['price'])
         change = float(js["ticker"]['change'])
         cents = findSpeakPoint(price)
-        print(price, change, cents)
         return price, change, cents
     else:
         print('Error, web service return data not in expected format')
@@ -177,3 +173,4 @@ def whatToSay(price,currency_received,change,cents):
                 else:
                     say+=" down by "+ (str(abs(int(change))))+" dollars in the last hour"
     return  say
+
