@@ -97,9 +97,9 @@ def lambda_handler(event, context):
                             say = "1 " + currency_received_2 + " is equivalent to " + str(format(round_off, '.2f')) + " "+currency_received_1
                         say+="<break time='100ms'/> and "
                         if vars[1]>vars[4]:
-                            say+=currency_received_1 + " is making profit of " + str(format(abs(vars[1])-float(vars[4]),'0.5f')) + " dollars as compared to "+ currency_received_2
+                            say+=currency_received_1 + " is making profit of " + str(format(abs((vars[1])-(vars[4]))*100,'0.3f')) + " cents as compared to "+ currency_received_2
                         else:
-                            say+=currency_received_2 + " is making profit of " + str(format(abs(vars[1])-float(vars[4]),'0.5f')) + " dollars as compared to "+ currency_received_1
+                            say+=currency_received_2 + " is making profit of " + str(format(abs((vars[1])-(vars[4]))*100,'0.3f')) + " cents as compared to "+ currency_received_1
                             
             ##say+=" While the price "
         return speechResponse(say, False, {})
