@@ -154,7 +154,7 @@ def whatToSay(price,currency_received,change,cents):
     returns the speech response string as "say"
     """
     say=""
-    if price == 0:
+    if int(price) == 0:
         say += "The price of " + currency_received + " is "+str(format(cents,'.4f')) + " cents"
     else:
         say = "The price of  " + currency_received + " is " + str(format(price, '.2f')) + " US  Dollars <break time='100ms'/>"
@@ -173,3 +173,4 @@ def whatToSay(price,currency_received,change,cents):
                 else:
                     say+=" down by "+ (str(abs(int(change))))+" dollars in the last hour"
     return  say
+
