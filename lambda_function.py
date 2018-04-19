@@ -102,10 +102,20 @@ def lambda_handler(event, context):
                             say+=currency_received_2 + " is making profit of " + str(format(abs((vars[1])-(vars[4]))*100,'0.3f')) + " cents as compared to "+ currency_received_1
                             
             ##say+=" While the price "
+        elif intentName=="AMAZON.StopIntent":
+            say=" I am Taking a breather. "
+            return speechResponse(say,False,{})
+        elif intentName=="AMAZON.CancelIntent":
+            say="See you soon. Goodbye"
+            return speechResponse(say,True,{})
+        elif intentName=="AMAZON.HelpIntent":
+            say="Always there to help. Ask me something like what is the rate of Ripple? or How is Ripple doing as compared to Dropil" 
+            return speechResponse(say,False,{})
         return speechResponse(say, False, {})
-
+        
+            
     elif event['request']['type'] == "SessionEndedRequest":
-        say = 'goodbye'
+        say = "goodbye"
         return speechResponse(say, True, {})
 
 
