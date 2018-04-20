@@ -51,67 +51,83 @@ def lambda_handler(event, context):
         intentName = event['request']['intent']['name']
         if intentName == "CryptoRateIntent":
             global d
-            currency_received = event['request']['intent']['slots']['Currency']['value']
-            currency_received = currency_received.lower()
-            if currency_received not in d:
-                say="Sorry, I don't know that"
-            else:
-                price,change,cents = httpsGet(d[currency_received])  ## see the helper function defined below
-                say=whatToSay(price,currency_received,change,cents)
-                if say=="":
+            try:
+                # TODO: write code...
+                currency_received = event['request']['intent']['slots']['Currency']['value']
+                if (len(currency_received)==0 or currency_received==None):
+                    say=" Sorry I don't know that"
+                    return speechResponse(say,True,{})
+                currency_received = currency_received.lower()
+                if currency_received not in d:
                     say="Sorry, I don't know that"
-            print(say)
+                else:
+                    price,change,cents = httpsGet(d[currency_received])  ## see the helper function defined below
+                    say=whatToSay(price,currency_received,change,cents)
+                    
+                    if say=="" or (price==0 and change==0 and cents==0):
+                        say="Sorry, I don't know that"
+            except KeyError:
+                #print("value error")
+                say="Sorry, I don't know that at this moment"
+                return speechResponse(say,True,{})
+           # print(say)
 
         elif intentName=="CryptoCompareIntent":
             ##call compare function
             say=""
-            currency_received_1 = event['request']['intent']['slots']['FirstCurrency']['value']
-            currency_received_1 = currency_received_1.lower()
-            currency_received_2 = event['request']['intent']['slots']['SecondCurrency']['value']
-            currency_received_2 = currency_received_2.lower()
-            if currency_received_1 not in d or currency_received_2 not in d:
-                say="Sorry I don't know that"
-            else:
-                if currency_received_1 == currency_received_2 :
-                    say="Can't Compare same currencies"
+            try:
+                
+                currency_received_1 = event['request']['intent']['slots']['FirstCurrency']['value']
+                currency_received_1 = currency_received_1.lower()
+                currency_received_2 = event['request']['intent']['slots']['SecondCurrency']['value']
+                currency_received_2 = currency_received_2.lower()
+                if currency_received_1 not in d or currency_received_2 not in d:
+                    say="Sorry I don't know that"
                 else:
-                    
-                    vars= list(httpsGet(d[currency_received_1],d[currency_received_2],True))  ## vars is list of values of currency_1 and currency_2, see return values
-                    if int(vars[0])!=0 and int(vars[3])!=0:
-                        if vars[0]>vars[3] :
-                            say="1 " + currency_received_1 +" is equivalent to "+ str(abs(int(vars[0]/vars[3]))) + " "+currency_received_2
-                        else:
-                            say = "1 " + currency_received_2 + " is equivalent to " + str(abs(int(vars[3]/vars[0]))) + " "+currency_received_1
-                        say+="<break time='100ms'/> and "
-                        if vars[1]>vars[4]:
-                            say+=currency_received_1 + " is making profit of " + str(abs(int(vars[1])-int(vars[4]))) + " dollars as compared to "+ currency_received_2
-                        
-                        else:
-                            say+=currency_received_2 + " is making profit of " + str(abs(int(vars[1])-int(vars[4]))) + " dollars as compared to "+ currency_received_1
+                    if currency_received_1 == currency_received_2 :
+                        say="Can't Compare same currencies"
                     else:
-                        if vars[2]>vars[5]:
-                            round_off = abs(vars[2]/vars[5])
-                            say="1 " + currency_received_1 +" is equivalent to "+ str(format(round_off, '.2f')) + " "+currency_received_2
-                        else:
-                            round_off = abs(float(vars[5]/vars[2]))
-                            say = "1 " + currency_received_2 + " is equivalent to " + str(format(round_off, '.2f')) + " "+currency_received_1
-                        say+="<break time='100ms'/> and "
-                        if vars[1]>vars[4]:
-                            say+=currency_received_1 + " is making profit of " + str(format(abs((vars[1])-(vars[4]))*100,'0.3f')) + " cents as compared to "+ currency_received_2
-                        else:
-                            say+=currency_received_2 + " is making profit of " + str(format(abs((vars[1])-(vars[4]))*100,'0.3f')) + " cents as compared to "+ currency_received_1
+                        
+                        vars= list(httpsGet(d[currency_received_1],d[currency_received_2],True))  ## vars is list of values of currency_1 and currency_2, see return values
+                        if int(vars[0])!=0 and int(vars[3])!=0:
+                            if vars[0]>vars[3] :
+                                say="1 " + currency_received_1 +" is equivalent to "+ str(abs(int(vars[0]/vars[3]))) + " "+currency_received_2
+                            else:
+                                say = "1 " + currency_received_2 + " is equivalent to " + str(abs(int(vars[3]/vars[0]))) + " "+currency_received_1
+                            say+="<break time='100ms'/> and "
+                            if vars[1]>vars[4]:
+                                say+=currency_received_1 + " is making profit of " + str(abs(int(vars[1])-int(vars[4]))) + " dollars as compared to "+ currency_received_2
                             
+                            else:
+                                say+=currency_received_2 + " is making profit of " + str(abs(int(vars[1])-int(vars[4]))) + " dollars as compared to "+ currency_received_1
+                        else:
+                            if vars[2]>vars[5]:
+                                round_off = abs(vars[2]/vars[5])
+                                say="1 " + currency_received_1 +" is equivalent to "+ str(format(round_off, '.2f')) + " "+currency_received_2
+                            else:
+                                round_off = abs(float(vars[5]/vars[2]))
+                                say = "1 " + currency_received_2 + " is equivalent to " + str(format(round_off, '.2f')) + " "+currency_received_1
+                            say+="<break time='100ms'/> and "
+                            if vars[1]>vars[4]:
+                                say+=currency_received_1 + " is making profit of " + str(format(abs((vars[1])-(vars[4]))*100,'0.3f')) + " cents as compared to "+ currency_received_2
+                            else:
+                                say+=currency_received_2 + " is making profit of " + str(format(abs((vars[1])-(vars[4]))*100,'0.3f')) + " cents as compared to "+ currency_received_1
+            except KeyError:
+                print("value error")
+                say="Sorry, I don't know that at this moment"
+                return speechResponse(say,True,{})
+                                
             ##say+=" While the price "
         elif intentName=="AMAZON.StopIntent":
-            say=" I am Taking a breather. "
-            return speechResponse(say,False,{})
+            say=" I am Taking a breather. Goodbye "
+            return speechResponse(say,True,{})
         elif intentName=="AMAZON.CancelIntent":
             say="See you soon. Goodbye"
             return speechResponse(say,True,{})
         elif intentName=="AMAZON.HelpIntent":
             say="Always there to help. Ask me something like what is the rate of Ripple? or How is Ripple doing as compared to Dropil" 
             return speechResponse(say,False,{})
-        return speechResponse(say, False, {})
+        return speechResponse(say, True, {})
         
             
     elif event['request']['type'] == "SessionEndedRequest":
@@ -144,14 +160,16 @@ def findPrice(js):
     """
     returns the final price in dollars or cents as per the current price
     """
-    if "price" in js["ticker"]:
-        price = float(js["ticker"]['price'])
-        change = float(js["ticker"]['change'])
-        cents = findSpeakPoint(price)
-        return price, change, cents
-    else:
-        print('Error, web service return data not in expected format')
-        return 0
+    try:
+        # TODO: write code...
+        if "price" in js["ticker"]:
+            price = float(js["ticker"]['price'])
+            change = float(js["ticker"]['change'])
+            cents = findSpeakPoint(price)
+            return price, change, cents
+    except KeyError:
+        #print("key error ")
+        return 0,0,0
 def findSpeakPoint(price):
     """
     returns cents if price less than 1 dollar.
