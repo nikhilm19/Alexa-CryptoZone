@@ -65,6 +65,8 @@
                         }
                     ],
                     "samples": [
+                        "tell the difference between {FirstCurrency} and {SecondCurrency}",
+                        "tell me the difference between {FirstCurrency} and {SecondCurrency}",
                         "what is the difference between {FirstCurrency} and {SecondCurrency}",
                         "what is difference between {FirstCurrency} and {SecondCurrency}",
                         "which is better {FirstCurrency} or {SecondCurrency}",
