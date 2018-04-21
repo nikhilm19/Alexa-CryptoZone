@@ -84,10 +84,7 @@
                     "values": [
                         {
                             "name": {
-                                "value": "bitcoin",
-                                "synonyms": [
-                                    "BITCOIN"
-                                ]
+                                "value": "bitcoin"
                             }
                         },
                         {
@@ -198,11 +195,6 @@
                         {
                             "name": {
                                 "value": "icon"
-                            }
-                        },
-                        {
-                            "name": {
-                                "value": "nano"
                             }
                         },
                         {
@@ -377,11 +369,6 @@
                         },
                         {
                             "name": {
-                                "value": "iostoken"
-                            }
-                        },
-                        {
-                            "name": {
                                 "value": "basicattentiontoken"
                             }
                         },
@@ -513,11 +500,6 @@
                         {
                             "name": {
                                 "value": "byteball"
-                            }
-                        },
-                        {
-                            "name": {
-                                "value": "dent"
                             }
                         },
                         {
